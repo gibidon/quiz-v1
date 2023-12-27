@@ -1,0 +1,12 @@
+.container {
+	margin: 0 auto;
+	max-width: 1068px;
+}
+
+.controls {
+	display: flex;
+	justify-content: space-around;
+	border: 1px solid grey;
+	height: 80px;
+	padding: 20px;
+}

@@ -1,0 +1,8 @@
+.dropdown {
+	padding: 1rem;
+	border: 1px solid lightgray;
+	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 1rem;
+}
