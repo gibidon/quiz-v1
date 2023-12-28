@@ -8,8 +8,6 @@ export const AddQiestionForm = () => {
 		correctAnswer: null,
 	});
 
-	console.log(question);
-
 	const handleInput = ({ target }) => {
 		setQuestion({ ...question, [target.name]: target.value });
 	};
@@ -59,12 +57,6 @@ export const AddQiestionForm = () => {
 			</div>
 			<button
 				onClick={() => {
-					console.log(
-						'bef sumbit',
-						question.title,
-						question.options,
-						question.correctAnswer,
-					);
 					addQuestionToDb({
 						title: question.title,
 						options: question.options.split(','),

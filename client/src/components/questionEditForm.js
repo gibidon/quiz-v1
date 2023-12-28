@@ -1,34 +1,24 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Dropdown } from './dropdown';
-import { AddOptionForm } from './addOptionForm';
 import styles from './questionEditForm.module.css';
 
 export const QuestionEditForm = ({ question }) => {
-	//TODO
-	//need to change fields in db, make it like object {title,answer1,2,3,4,correctAnswer}
-	// in order to make proper handleFormData function
-	// console.log('question in form', question);
-
-	// const [formData, setFormData] = useState({
-	// 	title: question.title,
-	// 	options: question.options,
-	// 	correctAnswer: question.correctAnswer,
-	// });
 	const questionId = question._id;
 	const [title, setTitle] = useState(question.title);
 	const [options, setOptions] = useState(question.options);
 	const [correctAnswer, setCorrectAnswer] = useState(question.correctAnswer);
+	// const [question, setQuestion] = useState({
+	// 	title: question.title,
+	// 	options: question.options,
+	// 	correctAnswer: question.correctAnswer,
+	// });
 	const [isAdding, setIsAdding] = useState(false);
 	const [addingOptionText, setAddingOptionText] = useState('');
 
 	const navigate = useNavigate();
 
-	console.log('options: ', options);
-	console.log('adding option', addingOptionText);
-
-	// const handleFormData = (e) => {
-	// 	setFormData({...formData,[e.target.name] : e.target.value});
+	// const handleQuestionChange = (e) => {
+	// 	setQuestion({ ...question, [e.target.name]: e.target.value });
 	// };
 
 	function handleTitleChange(e) {
@@ -36,9 +26,6 @@ export const QuestionEditForm = ({ question }) => {
 	}
 
 	const handleOptionsChange = (e, index) => {
-		console.log('index to change', index, typeof index);
-		console.log(e.target.value);
-		// setOptions([...options, ...(options[index] = e.target.value)]);
 		setOptions([
 			...options.slice(0, index),
 			e.target.value,
@@ -87,7 +74,7 @@ export const QuestionEditForm = ({ question }) => {
 				<input
 					type="text"
 					value={title}
-					name={'title'}
+					name="title"
 					onChange={handleTitleChange}
 				/>
 			</div>
