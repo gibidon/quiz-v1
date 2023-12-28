@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Dropdown } from './dropdown';
+import { AddOptionForm } from './addOptionForm';
 import styles from './questionEditForm.module.css';
 
 export const QuestionEditForm = ({ question }) => {
@@ -17,17 +19,21 @@ export const QuestionEditForm = ({ question }) => {
 	const [title, setTitle] = useState(question.title);
 	const [options, setOptions] = useState(question.options);
 	const [correctAnswer, setCorrectAnswer] = useState(question.correctAnswer);
+	const [isAdding, setIsAdding] = useState(false);
+	const [addingOptionText, setAddingOptionText] = useState('');
+
 	const navigate = useNavigate();
 
-	// console.log('options: ', options);
+	console.log('options: ', options);
+	console.log('adding option', addingOptionText);
 
 	// const handleFormData = (e) => {
 	// 	setFormData({...formData,[e.target.name] : e.target.value});
 	// };
 
-	const handleTitleChange = (e) => {
+	function handleTitleChange(e) {
 		setTitle(e.target.value);
-	};
+	}
 
 	const handleOptionsChange = (e, index) => {
 		console.log('index to change', index, typeof index);
@@ -49,13 +55,13 @@ export const QuestionEditForm = ({ question }) => {
 		setCorrectAnswer(e.target.value);
 	};
 
-	const saveQuestionOnServer = async ({
+	const editQuestionOnServer = async ({
 		questionId,
 		title,
 		options,
 		correctAnswer,
 	}) => {
-		fetch('http://127.0.0.1:3001/edit', {
+		await fetch('http://127.0.0.1:3001/edit', {
 			method: 'PUT',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ questionId, title, options, correctAnswer }),
@@ -68,13 +74,12 @@ export const QuestionEditForm = ({ question }) => {
 			onSubmit={async (e) => {
 				e.preventDefault();
 
-				await saveQuestionOnServer({
+				await editQuestionOnServer({
 					questionId,
 					title,
 					options,
 					correctAnswer,
 				});
-				// navigate('/');
 			}}
 		>
 			<div>
@@ -90,19 +95,32 @@ export const QuestionEditForm = ({ question }) => {
 				{options.map((option, index) => (
 					<li key={index}>
 						<textarea
-							// index={index}
 							defaultValue={option}
 							onChange={(e) => {
-								// console.log('index,', index);
 								handleOptionsChange(e, index);
 							}}
 						></textarea>
 						<button onClick={() => handleOptionRemove(index)}>
-							удалить вариант
+							Удалить вариант
 						</button>
 					</li>
 				))}
 			</ul>
+			<div>
+				<button onClick={() => setIsAdding(!isAdding)}>Добавить вариант</button>
+			</div>
+			{isAdding && (
+				<>
+					<input
+						onChange={({ target }) => {
+							setAddingOptionText(target.value);
+						}}
+					/>
+					<button onClick={() => setOptions([...options, addingOptionText])}>
+						Сохранить вариант
+					</button>
+				</>
+			)}
 			<div>
 				Правильный ответ:
 				{

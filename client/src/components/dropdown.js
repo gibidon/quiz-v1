@@ -1,18 +1,18 @@
 import { useState } from 'react';
-import { QuestionEditForm } from './questionEditForm';
-import styles from './dropdown.module.css';
+// import { QuestionEditForm } from './questionEditForm';
+// import styles from './dropdown.module.css';
 
-export const Dropdown = ({ question }) => {
+export const Dropdown = ({ children, buttonText }) => {
 	const [dropdownState, setDropdownState] = useState(false);
 
 	const handleDropdown = () => setDropdownState(!dropdownState);
 
 	return (
-		<div className={styles.dropdown}>
+		<div>
 			<div>
-				<button onClick={handleDropdown}>Click me!</button>
+				<button onClick={handleDropdown}>{buttonText}</button>
 			</div>
-			<div>{dropdownState && <QuestionEditForm question={question} />}</div>
+			<div>{dropdownState && children}</div>
 		</div>
 	);
 };

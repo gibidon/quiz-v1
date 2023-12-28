@@ -1,18 +1,16 @@
 import { useState, useEffect } from 'react';
-// import { Dropdown } from '../../components';
-import { Dropdown } from '#components';
+import { Dropdown, QuestionEditForm } from '#components';
+import styles from './edit.module.css';
+import { AddQiestionForm } from '../../components';
 
 export const Edit = () => {
 	// const [questions, setQuestions] = useState([{ number: null, title: '' }]);
 	const [questions, setQuestions] = useState([]);
 
-	console.log(questions);
-
 	useEffect(() => {
 		async function getQuestionsFromFb() {
 			const dbRequest = await fetch('http://127.0.0.1:3001/edit');
 			const dbQuestions = await dbRequest.json();
-			// console.log('dbQuestions in edit page', dbQuestions);
 			setQuestions(dbQuestions);
 		}
 
@@ -22,14 +20,19 @@ export const Edit = () => {
 	return (
 		<>
 			<h1>Edit page</h1>
-			{/* {questions.map(({ number, title }) => (
-				<div key={number}>
-					{number}, {title}
+
+			{questions.map((question, index) => (
+				<div key={index} className={styles.editTemplate}>
+					<p>Вопрос: {question.title}</p>
+					<Dropdown key={question._id} buttonText="Открыть">
+						<QuestionEditForm question={question} />
+					</Dropdown>
 				</div>
-			))} */}
-			{questions.map((question) => (
-				<Dropdown key={question._id} question={question} />
 			))}
+
+			<Dropdown buttonText="Добавить вопрос">
+				<AddQiestionForm />
+			</Dropdown>
 		</>
 	);
 };

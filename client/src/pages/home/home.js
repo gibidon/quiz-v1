@@ -4,15 +4,6 @@ import styles from './home.module.css';
 
 export const Home = () => {
 	const [results, setResults] = useState([]);
-	// console.log('resuults', results);
-
-	// useEffect(() => {
-	// 	fetch(`http://127.0.0.1:3001`)
-	// 		.then((res) => {
-	// 			return res.json();
-	// 		})
-	// 		.then((data) => console.log(data));
-	// }, []);
 
 	useEffect(() => {
 		const resultsFromStorage = JSON.parse(localStorage.getItem('results'));
