@@ -1,19 +1,18 @@
 const express = require('express');
-// const chalk = require('chalk');
+const path = require('path');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const path = require('path');
-
-const {
-	addQuestion,
-	editQuestion,
-	getQuestion,
-	getQuestions,
-} = require('./question.controller');
 
 const PORT = 3001;
 const app = express();
 const URL = 'mongodb://127.0.0.1:27017/quiz';
+
+const {
+	addQuestion,
+	editQuestion,
+	getQuestions,
+	deleteQuestion,
+} = require('./question.controller');
 
 app.use(express.static(path.resolve(__dirname, 'public')));
 app.use(
@@ -24,15 +23,8 @@ app.use(
 app.use(express.json());
 app.use(cors());
 
-app.get('/', async (req, res) => {
-	console.log('hitting / ');
-	res.json({ id: 44, title: 'some' });
-});
-
 app.get('/edit', async (req, res) => {
 	const questions = await getQuestions();
-	console.log('question in index to edit', questions);
-	// await editQuestion();
 	res.send(questions);
 });
 
@@ -40,37 +32,38 @@ app.put('/edit', async (req, res) => {
 	const { questionId: id, title, options, correctAnswer } = req.body;
 
 	try {
-		console.log(req.method, req.body.questionId);
-		// await editQuestion(req.body.questionId, { title, options, correctAnswer });
 		await editQuestion(id, { title, options, correctAnswer });
 	} catch (err) {
 		console.log('editiong err', err);
 	}
 });
 
-app.get('/question/:id', async (req, res) => {
-	// try {
-	// 	await addQuestion({
-	// 		number: req.params.id,
-	// 		title: 'Самый популярный фреймворк на фронтенде?',
-	// 		options: ['Vue', 'Svelte', 'React', 'Angular'],
-	// 		correctAnswer: 2,
-	// 	});
-	// } catch (error) {
-	// 	console.log('question adding error: ', err);
-	// }
+app.post('/edit', async (req, res) => {
+	const { title, options, correctAnswer } = req.body;
+	const totalQuestionQuantity = await getQuestions().length;
 
-	// try {
-	// 	const question = await getQuestion(req.params.id);
-	// 	console.log('question in express', question);
-	// } catch (err) {
-	// 	console.log('extracting error: ', err);
-	// }
+	try {
+		await addQuestion({
+			title,
+			options,
+			correctAnswer: Number(correctAnswer),
+			number: totalQuestionQuantity + 1,
+		});
+	} catch (err) {
+		console.log('adding question error', err);
+	}
+});
 
-	//question is found in database by number. Req.params.id === question number in db !!!
-	const question = await getQuestion(req.params.id);
+app.get('/questions/:id', async (req, res) => {
+	const questions = await getQuestions();
+	const totalQuestionQuantity = questions.length;
 
-	res.json(question);
+	res.json({ question: questions[req.params.id], totalQuestionQuantity });
+});
+
+app.delete('/:id', async (req, res) => {
+	await deleteQuestion(req.body.id);
+	console.log('deleted');
 });
 
 mongoose
