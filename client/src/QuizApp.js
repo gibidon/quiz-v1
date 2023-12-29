@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import { Edit, Home, Question, ResultPage } from './pages';
+import './styles/reset.css';
 
 export const QuizApp = () => {
 	localStorage.setItem('attempt', '0');

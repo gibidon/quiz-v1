@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Dropdown, QuestionEditForm } from '#components';
-import { AddQiestionForm } from '#components';
+import { AddQiestionForm, Dropdown, QuestionEditForm } from '#components';
 import styles from './edit.module.css';
 
 export const Edit = () => {
 	const [questions, setQuestions] = useState([]);
+	const [shouldUpdate, setShouldUpdate] = useState(false);
 
 	useEffect(() => {
 		async function getQuestionsFromFb() {
@@ -15,7 +15,6 @@ export const Edit = () => {
 
 		getQuestionsFromFb();
 	}, []);
-	console.log(questions);
 
 	const removeQuestion = async (id) => {
 		await fetch(`http://127.0.0.1:3001/${id}`, {
@@ -25,17 +24,23 @@ export const Edit = () => {
 		});
 	};
 	return (
-		<>
-			<h1>Страница редактирования вопросов</h1>
+		<div className={styles.container}>
+			<h1 className={styles.h1}>Страница редактирования вопросов</h1>
 
 			{questions.map((question, index) => (
-				// <div key={index} className={styles.editTemplate}>
 				<div key={question._id} className={styles.editTemplate}>
-					<div>Вопрос: {question.title}</div>
+					<div className={styles.questionTitle}>
+						Вопрос {index + 1}: {question.title}
+					</div>
 					<Dropdown key={question._id} buttonText="Открыть">
 						<QuestionEditForm question={question} />
 					</Dropdown>
-					<button onClick={() => removeQuestion(question._id)}>
+					<button
+						onClick={async () => {
+							await removeQuestion(question._id);
+							setShouldUpdate(!shouldUpdate);
+						}}
+					>
 						Удалить вопрос
 					</button>
 				</div>
@@ -44,6 +49,6 @@ export const Edit = () => {
 			<Dropdown buttonText="Добавить вопрос">
 				<AddQiestionForm />
 			</Dropdown>
-		</>
+		</div>
 	);
 };

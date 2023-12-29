@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+// import { ResizableInput } from '#components';
 import styles from './questionEditForm.module.css';
 
 export const QuestionEditForm = ({ question }) => {
@@ -77,10 +78,14 @@ export const QuestionEditForm = ({ question }) => {
 					name="title"
 					onChange={handleTitleChange}
 				/>
+				{/* <ResizableInput
+					initialValue={title}
+					onTitleChange={handleTitleChange}
+				/> */}
 			</div>
-			<ul>
+			<ul className={styles.ul}>
 				{options.map((option, index) => (
-					<li key={index}>
+					<li key={index} className={styles.li}>
 						<textarea
 							defaultValue={option}
 							onChange={(e) => {

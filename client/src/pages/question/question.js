@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import styles from './question.module.css';
 
 export const Question = () => {
 	const [question, setQuestion] = useState({
@@ -32,15 +33,15 @@ export const Question = () => {
 	}, [params.id]);
 
 	return (
-		<div>
+		<div className={styles.container}>
 			<form onSubmit={(e) => e.preventDefault()}>
-				<h1>
+				<h1 className={styles.questionHeader}>
 					Вопрос номер {Number(params.id) + 1} из {totalQuestionQuantity}
 				</h1>
-				{question.title}
-				<ul>
+				<div className={styles.title}>{question.title}</div>
+				<ul className={styles.list}>
 					{question.options.map((option, index) => (
-						<li key={index}>
+						<li key={index} className={styles.li}>
 							{option}
 							<input
 								type="radio"
@@ -53,6 +54,7 @@ export const Question = () => {
 				</ul>
 				<div>
 					<button
+						className={styles.prevBtn}
 						onClick={() => {
 							saveUserAnswer(selectedOption);
 							navigate(`/question/${Number(params.id) - 1}`);
@@ -63,6 +65,7 @@ export const Question = () => {
 					</button>
 					{Number(params.id) === totalQuestionQuantity - 1 ? (
 						<button
+							className={styles.endBtn}
 							onClick={() => {
 								saveUserAnswer(selectedOption);
 								navigate('/result');
@@ -72,6 +75,7 @@ export const Question = () => {
 						</button>
 					) : (
 						<button
+							className={styles.nextBtn}
 							onClick={() => {
 								saveUserAnswer(selectedOption);
 								navigate(`/question/${Number(params.id) + 1}`);

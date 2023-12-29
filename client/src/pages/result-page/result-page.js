@@ -1,9 +1,7 @@
-import { json, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { calculateResult } from '../../utils';
+import { BasicButton } from '#components';
 import styles from './result-page.module.css';
-import { useEffect, useState } from 'react';
-
-// [3,2,0,0,2]
 
 export const ResultPage = () => {
 	const navigate = useNavigate();
@@ -31,29 +29,25 @@ export const ResultPage = () => {
 	saveResultToStorage();
 
 	return (
-		<div>
-			<div>
+		<div className={styles.container}>
+			<div className={styles.result}>
 				Правильных ответов: {result} из {userAnswers.length}
 			</div>
 			<div className={styles.buttons}>
-				<button
+				<BasicButton
+					text="На главную"
 					onClick={() => {
 						setNextAttempt();
-						// saveResultToStorage();
 						navigate('/');
 					}}
-				>
-					На главную
-				</button>
-				<button
+				/>
+				<BasicButton
+					text="Пройти тест заново"
 					onClick={() => {
 						setNextAttempt();
-						// saveResultToStorage();
 						navigate('/question/0');
 					}}
-				>
-					Пройти еще раз
-				</button>
+				/>
 			</div>
 		</div>
 	);
