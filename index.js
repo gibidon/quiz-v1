@@ -5,7 +5,8 @@ const mongoose = require('mongoose');
 
 const PORT = 3001;
 const app = express();
-const URL = 'mongodb://127.0.0.1:27017/quiz';
+const URL =
+	'mongodb+srv://malykhinig:Q2F55ed06MAye89H@cluster0.rto6ml8.mongodb.net/quiz?retryWrites=true&w=majority';
 
 const {
 	addQuestion,
